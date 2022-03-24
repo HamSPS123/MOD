@@ -1,0 +1,76 @@
+RewriteEngine On
+
+RewriteRule ^/?$ index.php
+RewriteRule ^index?$ index.php
+ErrorDocument 404 /mod/404/error.php
+
+<IfModule mod_php7.c>
+php_value max_input_vars 5000
+php_value suhosin.get.max_vars 5000
+php_value suhosin.post.max_vars 5000
+php_value suhosin.request.max_vars 5000
+
+php_value memory_limit 256M
+php_value post_max_size 40M
+php_value max_execution_time 120
+</IfModule>
+
+## hrd
+RewriteRule ^hrd/index?$ hrd/index.php
+RewriteRule ^hrd/main?$ hrd/main.php
+RewriteRule ^hrd/Document/type?$ hrd/Document/type.php
+RewriteRule ^hrd/Document/upload?$ hrd/Document/upload.php
+RewriteRule ^hrd/Management/group?$ hrd/Management/group.php
+RewriteRule ^hrd/Management/university?$ hrd/Management/university.php
+RewriteRule ^hrd/Management/level?$ hrd/Management/level.php
+RewriteRule ^hrd/period/year/?$ hrd/period/year.php
+RewriteRule ^hrd/period/Add-Dept/?$ hrd/period/add_dept.php
+RewriteRule ^hrd/divide/share?$ hrd/divide/share.php
+RewriteRule ^hrd/divide/distribute?$ hrd/divide/distribute.php
+RewriteRule ^hrd/edit-distribute/edit-share?$ hrd/edit_distribute/edit_share.php
+RewriteRule ^hrd/edit-distribute/edit-distribute?$ hrd/edit_distribute/edit_distribute.php
+RewriteRule ^hrd/report/report-supply?$ hrd/report/report_supply.php
+RewriteRule ^hrd/report/report-demand?$ hrd/report/report_demand.php
+RewriteRule ^hrd/report/report-hrd?$ hrd/report/report_hrd.php
+RewriteRule ^hrd/Management/?$ hrd/Management/index.php
+RewriteRule ^hrd/Management/group-st?$ hrd/Management/group_st.php
+RewriteRule ^hrd/Management/statistic?$ hrd/Management/statistic.php
+RewriteRule ^hrd/statistic/statistic?$ hrd/statistic/statistic.php
+
+## demand 
+RewriteRule ^demand/index?$ demand/index.php
+RewriteRule ^demand/main?$ demand/main.php
+RewriteRule ^demand/create/new-demand?$ demand/create/new_demand.php
+RewriteRule ^demand/edit/edit-demand?$ demand/edit/edit_demand.php
+RewriteRule ^demand/report/report-demand?$ demand/report/report_demand.php
+RewriteRule ^demand/report/report-hrd?$ demand/report/report_hrd.php
+
+## supply
+RewriteRule ^supply/index?$ supply/index.php
+RewriteRule ^supply/Main?$ supply/main.php
+RewriteRule ^supply/create/new-supply?$ supply/create/new_supply.php
+RewriteRule ^supply/edit/edit-supply?$ supply/edit/edit_supply.php
+RewriteRule ^supply/Management/faculty?$ supply/Management/faculty.php
+RewriteRule ^supply/Management/course?$ supply/Management/course.php
+RewriteRule ^supply/report/report-supply?$ supply/report/report_supply.php
+RewriteRule ^supply/report/report-hrd?$ supply/report/report_hrd.php
+
+## admin
+RewriteRule ^admin/index?$ admin/index.php
+RewriteRule ^admin/main?$ admin/main.php
+RewriteRule ^admin/data/user?$ admin/data/user.php
+RewriteRule ^admin/data/user-hrd?$ admin/data/user_hrd.php
+RewriteRule ^admin/data/user-supply?$ admin/data/user_supply.php
+RewriteRule ^admin/data/user-department?$ admin/data/user_department.php
+RewriteRule ^admin/data/user-demand?$ admin/data/user_demand.php
+RewriteRule ^admin/data/province?$ admin/data/province.php
+RewriteRule ^admin/edit/edit-demand?$ admin/edit/edit_demand.php
+RewriteRule ^admin/edit/edit-distribute?$ admin/edit/edit_distribute.php
+RewriteRule ^admin/edit/share?$ admin/edit/edit_share.php
+RewriteRule ^admin/edit/edit-supply?$ admin/edit/edit_supply.php
+
+
+# Department 
+RewriteRule ^department/edit/edit-supply?$ department/edit/edit_supply.php
+RewriteRule ^department/index?$ department/index.php
+RewriteRule ^department/Main?$ department/main.php
