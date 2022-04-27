@@ -1,18 +1,19 @@
 <?php
     include "../../oop/connect.php";
 
+    //Selected Fy
     if(isset($_POST['type'])){
         if($_POST['type'] == "fy_data"){
             $option = mysqli_query($conn, "SELECT * FROM fy ORDER BY fy_id ASC");
             foreach($option as $data){
                 $output[] = array(
-                    'id' => $data['fy_id'],
+                    'id' => $data['year'],
                     'name' => $data['fy_id']
                 );
             }
             echo json_encode($output);
         }else if($_POST['type'] == "adj_data"){
-            $query = mysqli_query($conn, "SELECT adj_id,fy_id,a.dept_id,dept_name FROM adjust a LEFT JOIN department d ON a.dept_id=d.dept_id WHERE fy_id='$_POST[fy_id]' ORDER BY a.dept_id");
+            $query = mysqli_query($conn, "SELECT adj_id,a.fy_id,a.dept_id,dept_name FROM adjust a LEFT JOIN department d ON a.dept_id=d.dept_id LEFT JOIN fy ON a.fy_id=fy.fy_id WHERE year='$_POST[fy_id]' ORDER BY a.dept_id");
             foreach($query as $data){
                 $output[] = array(
                     'id' => $data['adj_id'],

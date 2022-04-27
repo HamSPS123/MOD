@@ -1,6 +1,7 @@
 <?php
     global $table;
 
+    
 
     $table .= '
     <style>

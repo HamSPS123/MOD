@@ -2,6 +2,12 @@
     global $table;
 
     $table .= '
+    <style>
+        .bold td{
+            font-weight: bold;
+        }
+    </style>
+
     <div class="table-responsive tscroll">
     <table class="table table-bordered text-center">
         <thead class="table-primary">
@@ -86,6 +92,480 @@
             </tr>
         </thead>
         <tbody>';
+        //Last year
+        $query = mysqli_query($conn, "SELECT as_id,sd.adj_id,sd.st_id,st_name,a.fy_id,
+        SUM(univer)+SUM(univer_valunteer)+SUM(prov)+SUM(intv)+SUM(ad_test)+SUM(std_public)+SUM(emp)+SUM(std_handi)+SUM(std_lan)+SUM(ssk)+SUM(std)+SUM(emp_gov)+SUM(test)+SUM(std_con)+SUM(std_2lan)+SUM(std_inter)+SUM(emp_private) AS total,
+        SUM(univer) AS univer,
+        SUM(univer_valunteer) AS univer_valunteer,
+        SUM(prov) AS prov,
+        SUM(intv) AS intv,
+        SUM(ad_test) AS ad_test,
+        SUM(std_public) AS std_public,
+        SUM(emp) AS emp,
+        SUM(std_handi) AS std_handi,
+        SUM(std_lan) AS std_lan,
+        SUM(ssk) AS ssk,
+        SUM(std) AS std,
+        SUM(emp_gov) AS emp_gov,
+        SUM(test) AS test,
+        SUM(std_con) AS std_con,
+        SUM(std_2lan) AS std_2lan,
+        SUM(std_inter) AS std_inter,
+        SUM(emp_private) AS emp_private
+        FROM statistic_detail sd
+        LEFT JOIN statatic s ON sd.st_id=s.st_id
+        LEFT JOIN adjust a ON sd.adj_id=a.adj_id
+        LEFT JOIN fy ON a.fy_id=fy.fy_id
+        WHERE year=$fy_id-1 AND (level_id = 2 OR level_id = 4) GROUP BY a.fy_id;");
+        if(mysqli_num_rows($query)>0){
+            foreach($query as $row){
+                $table .= '<tr>
+                <td>&nbsp;</td>
+                <td style="text-align: left;">ນັກຮຽນມໍ 7 ໃນສົກຮຽນ '. $row['fy_id'] .'</td>
+                <td>'. number_format($row['total'],0) .'</td>
+                <td>'. number_format($row['std_public'],0) .'</td>
+                <td>'. number_format($row['univer'],0) .'</td>
+                <td>'. number_format($row['emp'],0) .'</td>
+                <td>'. number_format($row['ssk'],0) .'</td>
+                <td>'. number_format($row['univer_valunteer'],0) .'</td>
+                <td>'. number_format($row['ad_test'],0) .'</td>
+                <td>'. number_format($row['emp_gov'],0) .'</td>
+                <td>'. number_format($row['std'],0) .'</td>
+                <td>'. number_format($row['std_con'],0) .'</td>
+                <td>'. number_format($row['std_2lan'],0) .'</td>
+                <td>'. number_format($row['std_inter'],0) .'</td>
+                <td>'. number_format($row['intv'],0) .'</td>';
+
+                $group_std_vte = 0;
+                $group_std_bke = 0;
+                $group_std_blk = 0;
+                $group_std_cps = 0;
+                $group_std_hph = 0;
+                $group_std_khm = 0;
+                $group_std_lnt = 0;
+                $group_std_lpb = 0;
+                $group_std_odx = 0;
+                $group_std_psl = 0;
+                $group_std_slv = 0;
+                $group_std_svk = 0;
+                $group_std_vtep = 0;
+                $group_std_syb = 0;
+                $group_std_skg = 0;
+                $group_std_xsb = 0;
+                $group_std_xkg = 0;
+                $group_std_atp = 0;
+                
+                $group_emp_vte = 0;
+                $group_emp_bke = 0;
+                $group_emp_blk = 0;
+                $group_emp_cps = 0;
+                $group_emp_hph = 0;
+                $group_emp_khm = 0;
+                $group_emp_lnt = 0;
+                $group_emp_lpb = 0;
+                $group_emp_odx = 0;
+                $group_emp_psl = 0;
+                $group_emp_slv = 0;
+                $group_emp_svk = 0;
+                $group_emp_vtep = 0;
+                $group_emp_syb = 0;
+                $group_emp_skg = 0;
+                $group_emp_xsb = 0;
+                $group_emp_xkg = 0;
+                $group_emp_atp = 0;
+
+                $quota = mysqli_query($conn, "SELECT sd_id,sd.as_id,sd.p_m_id,p_m_name,SUM(std_qty) AS std_qty, SUM(emp_qty) AS emp_qty,sdt.st_id,level_id
+                FROM statistic_distribute sd
+                LEFT JOIN statistic_detail sdt ON sd.as_id=sdt.as_id
+                LEFT JOIN statatic s ON sdt.st_id=s.st_id
+                LEFT JOIN adjust a ON sdt.adj_id=a.adj_id
+                LEFT JOIN fy ON a.fy_id=fy.fy_id
+                LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
+                WHERE (level_id=2 OR level_id=4) AND year='$fy_id' GROUP BY sd.p_m_id;");
+
+                foreach($quota as $data){
+                    if($data['p_m_id'] == 1){
+                        $group_std_vte = $data['std_qty'];
+                        $group_emp_vte = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 2){
+                        $group_std_bke = $data['std_qty'];
+                        $group_emp_bke = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 3){
+                        $group_std_blk = $data['std_qty'];
+                        $group_emp_blk = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 4){
+                        $group_std_cps = $data['std_qty'];
+                        $group_emp_cps = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 5){
+                        $group_std_hph = $data['std_qty'];
+                        $group_emp_hph = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 6){
+                        $group_std_khm = $data['std_qty'];
+                        $group_emp_khm = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 7){
+                        $group_std_lnt = $data['std_qty'];
+                        $group_emp_lnt = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 8){
+                        $group_std_lpb = $data['std_qty'];
+                        $group_emp_lpb = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 9){
+                        $group_std_odx = $data['std_qty'];
+                        $group_emp_odx = $data['emp_qty'];
+                        }
+
+                        
+                        if($data['p_m_id'] == 10){
+                        $group_std_psl = $data['std_qty'];
+                        $group_emp_psl = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 11){
+                        $group_std_slv = $data['std_qty'];
+                        $group_emp_slv = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 12){
+                        $group_std_svk = $data['std_qty'];
+                        $group_emp_svk = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 13){
+                        $group_std_vtep = $data['std_qty'];
+                        $group_emp_vtep = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 14){
+                        $group_std_syb = $data['std_qty'];
+                        $group_emp_syb = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 15){
+                        $group_std_skg = $data['std_qty'];
+                        $group_emp_skg = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 16){
+                        $group_std_xsb = $data['std_qty'];
+                        $group_emp_xsb = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 17){
+                        $group_std_xkg = $data['std_qty'];
+                        $group_emp_xkg = $data['emp_qty'];
+                        }
+
+                        if($data['p_m_id'] == 18){
+                        $group_std_atp = $data['std_qty'];
+                        $group_emp_atp = $data['emp_qty'];
+                        }
+                }
+
+                $table .='
+                <td>'. number_format($group_std_vte,0) .'</td>
+                <td>'. number_format($group_emp_vte,0) .'</td>
+                <td>'. number_format($group_std_psl,0) .'</td>
+                <td>'. number_format($group_emp_psl,0) .'</td>
+                <td>'. number_format($group_std_lnt,0) .'</td>
+                <td>'. number_format($group_emp_lnt,0) .'</td>
+                <td>'. number_format($group_std_odx,0) .'</td>
+                <td>'. number_format($group_emp_odx,0) .'</td>
+                <td>'. number_format($group_std_bke,0) .'</td>
+                <td>'. number_format($group_emp_bke,0) .'</td>
+                <td>'. number_format($group_std_lpb,0) .'</td>
+                <td>'. number_format($group_emp_lpb,0) .'</td>
+                <td>'. number_format($group_std_hph,0) .'</td>
+                <td>'. number_format($group_emp_hph,0) .'</td>
+                <td>'. number_format($group_std_syb,0) .'</td>
+                <td>'. number_format($group_emp_syb,0) .'</td>
+                <td>'. number_format($group_std_xkg,0) .'</td>
+                <td>'. number_format($group_emp_xkg,0) .'</td>
+                <td>'. number_format($group_std_vtep,0) .'</td>
+                <td>'. number_format($group_emp_vtep,0) .'</td>
+                <td>'. number_format($group_std_xsb,0) .'</td>
+                <td>'. number_format($group_emp_xsb,0) .'</td>
+                <td>'. number_format($group_std_blk,0) .'</td>
+                <td>'. number_format($group_emp_blk,0) .'</td>
+                <td>'. number_format($group_std_khm,0) .'</td>
+                <td>'. number_format($group_emp_khm,0) .'</td>
+                <td>'. number_format($group_std_svk,0) .'</td>
+                <td>'. number_format($group_emp_svk,0) .'</td>
+                <td>'. number_format($group_std_slv,0) .'</td>
+                <td>'. number_format($group_emp_slv,0) .'</td>
+                <td>'. number_format($group_std_skg,0) .'</td>
+                <td>'. number_format($group_emp_skg,0) .'</td>
+                <td>'. number_format($group_std_cps,0) .'</td>
+                <td>'. number_format($group_emp_cps,0) .'</td>
+                <td>'. number_format($group_std_atp,0) .'</td>
+                <td>'. number_format($group_emp_atp,0) .'</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>';
+            }
+        }
+
+        // All Year
+        $query = mysqli_query($conn, "SELECT as_id,sd.adj_id,st_id,a.fy_id,
+        SUM(univer)+SUM(univer_valunteer)+SUM(prov)+SUM(intv)+SUM(ad_test)+SUM(std_public)+SUM(emp)+SUM(std_handi)+SUM(std_lan)+SUM(ssk)+SUM(std)+SUM(emp_gov)+SUM(test)+SUM(std_con)+SUM(std_2lan)+SUM(std_inter)+SUM(emp_private) AS total,
+        SUM(univer) as univer,
+        SUM(univer_valunteer) AS univer_valunteer,
+        SUM(prov) AS prov,
+        SUM(intv) AS intv,
+        SUM(ad_test) AS ad_test,
+        SUM(std_public) as std_public,
+        SUM(emp) AS emp,
+        SUM(std_handi) AS std_handi,
+        SUM(std_lan) AS std_lan,
+        SUM(ssk) AS ssk,
+        SUM(std) as std,
+        SUM(emp_gov) AS emp_gov,
+        SUM(test) AS test,
+        SUM(std_con) AS std_con,
+        SUM(std_2lan) AS std_2lan,
+        SUM(std_inter) AS std_inter,
+        SUM(emp_private) AS emp_private
+        FROM statistic_detail sd
+        LEFT JOIN adjust a ON sd.adj_id=a.adj_id
+        LEFT JOIN fy ON a.fy_id=fy.fy_id
+        WHERE year='$fy_id' GROUP BY fy_id");
+        if(mysqli_num_rows($query)>0){
+            foreach($query as $row){
+                $table .= '
+                        <tr class="bold">
+                            <td>&nbsp;</td>
+                            <td style="text-align: left;">ຈຳນວນນັກຮຽນ-ພະນັກງານ ຮຽນຕໍ່ສຳຫຼັບສົກຮຽນ '. $row['fy_id'] .'</td>
+                            <td>'. number_format($row['total'],0) .'</td>
+                            <td>'. number_format($row['std_public'],0) .'</td>
+                            <td>'. number_format($row['univer'],0) .'</td>
+                            <td>'. number_format($row['emp'],0) .'</td>
+                            <td>'. number_format($row['ssk'],0) .'</td>
+                            <td>'. number_format($row['univer_valunteer'],0) .'</td>
+                            <td>'. number_format($row['ad_test'],0) .'</td>
+                            <td>'. number_format($row['emp_gov'],0) .'</td>
+                            <td>'. number_format($row['std'],0) .'</td>
+                            <td>'. number_format($row['std_con'],0) .'</td>
+                            <td>'. number_format($row['std_2lan'],0) .'</td>
+                            <td>'. number_format($row['std_inter'],0) .'</td>
+                            <td>'. number_format($row['intv'],0) .'</td>';
+
+                            $group_std_vte = 0;
+                            $group_std_bke = 0;
+                            $group_std_blk = 0;
+                            $group_std_cps = 0;
+                            $group_std_hph = 0;
+                            $group_std_khm = 0;
+                            $group_std_lnt = 0;
+                            $group_std_lpb = 0;
+                            $group_std_odx = 0;
+                            $group_std_psl = 0;
+                            $group_std_slv = 0;
+                            $group_std_svk = 0;
+                            $group_std_vtep = 0;
+                            $group_std_syb = 0;
+                            $group_std_skg = 0;
+                            $group_std_xsb = 0;
+                            $group_std_xkg = 0;
+                            $group_std_atp = 0;
+                            
+                            $group_emp_vte = 0;
+                            $group_emp_bke = 0;
+                            $group_emp_blk = 0;
+                            $group_emp_cps = 0;
+                            $group_emp_hph = 0;
+                            $group_emp_khm = 0;
+                            $group_emp_lnt = 0;
+                            $group_emp_lpb = 0;
+                            $group_emp_odx = 0;
+                            $group_emp_psl = 0;
+                            $group_emp_slv = 0;
+                            $group_emp_svk = 0;
+                            $group_emp_vtep = 0;
+                            $group_emp_syb = 0;
+                            $group_emp_skg = 0;
+                            $group_emp_xsb = 0;
+                            $group_emp_xkg = 0;
+                            $group_emp_atp = 0;
+
+                            $quota = mysqli_query($conn, "SELECT sd_id,sd.as_id,sd.p_m_id,p_m_name,SUM(std_qty) AS std_qty, SUM(emp_qty) AS emp_qty,sdt.st_id,level_id
+                            FROM statistic_distribute sd
+                            LEFT JOIN statistic_detail sdt ON sd.as_id=sdt.as_id
+                            LEFT JOIN statatic s ON sdt.st_id=s.st_id
+                            LEFT JOIN adjust a ON sdt.adj_id=a.adj_id
+                            LEFT JOIN fy ON a.fy_id=fy.fy_id
+                            LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
+                            WHERE year='$fy_id' GROUP BY sd.p_m_id;");
+
+                            foreach($quota as $data){
+                                if($data['p_m_id'] == 1){
+                                    $group_std_vte = $data['std_qty'];
+                                    $group_emp_vte = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 2){
+                                    $group_std_bke = $data['std_qty'];
+                                    $group_emp_bke = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 3){
+                                    $group_std_blk = $data['std_qty'];
+                                    $group_emp_blk = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 4){
+                                    $group_std_cps = $data['std_qty'];
+                                    $group_emp_cps = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 5){
+                                    $group_std_hph = $data['std_qty'];
+                                    $group_emp_hph = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 6){
+                                    $group_std_khm = $data['std_qty'];
+                                    $group_emp_khm = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 7){
+                                    $group_std_lnt = $data['std_qty'];
+                                    $group_emp_lnt = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 8){
+                                    $group_std_lpb = $data['std_qty'];
+                                    $group_emp_lpb = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 9){
+                                    $group_std_odx = $data['std_qty'];
+                                    $group_emp_odx = $data['emp_qty'];
+                                    }
+            
+                                    
+                                    if($data['p_m_id'] == 10){
+                                    $group_std_psl = $data['std_qty'];
+                                    $group_emp_psl = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 11){
+                                    $group_std_slv = $data['std_qty'];
+                                    $group_emp_slv = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 12){
+                                    $group_std_svk = $data['std_qty'];
+                                    $group_emp_svk = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 13){
+                                    $group_std_vtep = $data['std_qty'];
+                                    $group_emp_vtep = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 14){
+                                    $group_std_syb = $data['std_qty'];
+                                    $group_emp_syb = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 15){
+                                    $group_std_skg = $data['std_qty'];
+                                    $group_emp_skg = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 16){
+                                    $group_std_xsb = $data['std_qty'];
+                                    $group_emp_xsb = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 17){
+                                    $group_std_xkg = $data['std_qty'];
+                                    $group_emp_xkg = $data['emp_qty'];
+                                    }
+            
+                                    if($data['p_m_id'] == 18){
+                                    $group_std_atp = $data['std_qty'];
+                                    $group_emp_atp = $data['emp_qty'];
+                                    }
+                            }
+
+                            $table .='
+                            <td>'. number_format($group_std_vte,0) .'</td>
+                            <td>'. number_format($group_emp_vte,0) .'</td>
+                            <td>'. number_format($group_std_psl,0) .'</td>
+                            <td>'. number_format($group_emp_psl,0) .'</td>
+                            <td>'. number_format($group_std_lnt,0) .'</td>
+                            <td>'. number_format($group_emp_lnt,0) .'</td>
+                            <td>'. number_format($group_std_odx,0) .'</td>
+                            <td>'. number_format($group_emp_odx,0) .'</td>
+                            <td>'. number_format($group_std_bke,0) .'</td>
+                            <td>'. number_format($group_emp_bke,0) .'</td>
+                            <td>'. number_format($group_std_lpb,0) .'</td>
+                            <td>'. number_format($group_emp_lpb,0) .'</td>
+                            <td>'. number_format($group_std_hph,0) .'</td>
+                            <td>'. number_format($group_emp_hph,0) .'</td>
+                            <td>'. number_format($group_std_syb,0) .'</td>
+                            <td>'. number_format($group_emp_syb,0) .'</td>
+                            <td>'. number_format($group_std_xkg,0) .'</td>
+                            <td>'. number_format($group_emp_xkg,0) .'</td>
+                            <td>'. number_format($group_std_vtep,0) .'</td>
+                            <td>'. number_format($group_emp_vtep,0) .'</td>
+                            <td>'. number_format($group_std_xsb,0) .'</td>
+                            <td>'. number_format($group_emp_xsb,0) .'</td>
+                            <td>'. number_format($group_std_blk,0) .'</td>
+                            <td>'. number_format($group_emp_blk,0) .'</td>
+                            <td>'. number_format($group_std_khm,0) .'</td>
+                            <td>'. number_format($group_emp_khm,0) .'</td>
+                            <td>'. number_format($group_std_svk,0) .'</td>
+                            <td>'. number_format($group_emp_svk,0) .'</td>
+                            <td>'. number_format($group_std_slv,0) .'</td>
+                            <td>'. number_format($group_emp_slv,0) .'</td>
+                            <td>'. number_format($group_std_skg,0) .'</td>
+                            <td>'. number_format($group_emp_skg,0) .'</td>
+                            <td>'. number_format($group_std_cps,0) .'</td>
+                            <td>'. number_format($group_emp_cps,0) .'</td>
+                            <td>'. number_format($group_std_atp,0) .'</td>
+                            <td>'. number_format($group_emp_atp,0) .'</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    ';
+            }
+        }else{
+            $table .= '';
+        }
             // ນັກຮຽນມໍ 7
             $query = mysqli_query($conn, "SELECT as_id,sd.adj_id,sd.st_id,st_name,
             SUM(univer)+SUM(univer_valunteer)+SUM(prov)+SUM(intv)+SUM(ad_test)+SUM(std_public)+SUM(emp)+SUM(std_handi)+SUM(std_lan)+SUM(ssk)+SUM(std)+SUM(emp_gov)+SUM(test)+SUM(std_con)+SUM(std_2lan)+SUM(std_inter)+SUM(emp_private) AS total,
@@ -109,7 +589,8 @@
             FROM statistic_detail sd
             LEFT JOIN statatic s ON sd.st_id=s.st_id
             LEFT JOIN adjust a ON sd.adj_id=a.adj_id
-            WHERE fy_id='$fy_id' AND (level_id = 2 OR level_id = 4);");
+            LEFT JOIN fy ON a.fy_id=fy.fy_id
+            WHERE year='$fy_id' AND (level_id = 2 OR level_id = 4) GROUP BY a.fy_id;");
             if(mysqli_num_rows($query)>0){
                 foreach($query as $row){
                     $table .= '
@@ -173,8 +654,9 @@
                             LEFT JOIN statistic_detail sdt ON sd.as_id=sdt.as_id
                             LEFT JOIN statatic s ON sdt.st_id=s.st_id
                             LEFT JOIN adjust a ON sdt.adj_id=a.adj_id
+                            LEFT JOIN fy ON a.fy_id=fy.fy_id
                             LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
-                            WHERE (level_id=2 OR level_id=4) AND fy_id='$fy_id' GROUP BY sd.p_m_id;");
+                            WHERE (level_id=2 OR level_id=4) AND year='$fy_id' GROUP BY sd.p_m_id;");
 
                             foreach($quota as $data){
                                 if($data['p_m_id'] == 1){
@@ -320,6 +802,8 @@
                         </tr>
                     ';
                 }
+            }else{
+                $table .= '';
             }
 
             // ນັກຮຽນມໍ 4
@@ -345,7 +829,8 @@
             FROM statistic_detail sd
             LEFT JOIN statatic s ON sd.st_id=s.st_id
             LEFT JOIN adjust a ON sd.adj_id=a.adj_id
-            WHERE fy_id='$fy_id' AND level_id = 1;");
+            LEFT JOIN fy ON a.fy_id=fy.fy_id
+            WHERE year='$fy_id' AND level_id = 1 GROUP BY a.fy_id;");
             if(mysqli_num_rows($query)>0){
                 foreach($query as $row){
                     $table .= '
@@ -409,8 +894,9 @@
                             LEFT JOIN statistic_detail sdt ON sd.as_id=sdt.as_id
                             LEFT JOIN statatic s ON sdt.st_id=s.st_id
                             LEFT JOIN adjust a ON sdt.adj_id=a.adj_id
-                            LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
-                            WHERE level_id=1 AND fy_id='$fy_id' GROUP BY sd.p_m_id;");
+                            LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id 
+                            LEFT JOIN fy ON a.fy_id=fy.fy_id
+                            WHERE level_id=1 AND year='$fy_id' GROUP BY sd.p_m_id;");
 
                             foreach($quota as $data){
                                 if($data['p_m_id'] == 1){
@@ -581,7 +1067,8 @@
             FROM statistic_detail sd
             LEFT JOIN statatic s ON sd.st_id=s.st_id
             LEFT JOIN adjust a ON sd.adj_id=a.adj_id
-            WHERE fy_id='$fy_id' AND level_id = 3;");
+            LEFT JOIN fy ON a.fy_id=fy.fy_id
+            WHERE year='$fy_id' AND level_id = 3 GROUP BY a.fy_id;");
             if(mysqli_num_rows($query)>0){
                 foreach($query as $row){
                     $table .= '
@@ -645,8 +1132,9 @@
                             LEFT JOIN statistic_detail sdt ON sd.as_id=sdt.as_id
                             LEFT JOIN statatic s ON sdt.st_id=s.st_id
                             LEFT JOIN adjust a ON sdt.adj_id=a.adj_id
+                            LEFT JOIN fy ON a.fy_id=fy.fy_id
                             LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
-                            WHERE level_id=3 AND fy_id='$fy_id' GROUP BY sd.p_m_id;");
+                            WHERE level_id=3 AND year='$fy_id' GROUP BY sd.p_m_id;");
 
                             foreach($quota as $data){
                                 if($data['p_m_id'] == 1){
@@ -794,7 +1282,7 @@
                 }
             }
             
-                    $query = mysqli_query($conn, "SELECT as_id,sd.adj_id,fy_id,sd.st_id,st_name,st_group,group_name,
+                    $query = mysqli_query($conn, "SELECT as_id,sd.adj_id,a.fy_id,sd.st_id,st_name,st_group,group_name,
                     SUM(std_high_school)+SUM(univer)+SUM(univer_valunteer)+SUM(prov)+SUM(intv)+SUM(ad_test)+SUM(std_public)+SUM(emp)+SUM(std_handi)+SUM(std_lan)+SUM(ssk)+SUM(std)+SUM(emp_gov)+SUM(test)+SUM(std_con)+SUM(std_2lan)+SUM(std_inter)+SUM(emp_private) as total,
                     SUM(std_high_school) as std_high_school,
                     SUM(univer) as univer,
@@ -819,13 +1307,13 @@
                     LEFT JOIN statatic st ON sd.st_id=st.st_id
                     LEFT JOIN statatic_group sg ON st.st_group=sg.group_id
                     LEFT JOIN adjust a ON sd.adj_id=a.adj_id
-                    WHERE fy_id='$fy_id' GROUP BY st_group ORDER BY st_group;");
+                    LEFT JOIN fy ON a.fy_id=fy.fy_id
+                    WHERE year='$fy_id' GROUP BY st_group ORDER BY st_group;");
                     if(mysqli_num_rows($query)>0){
                         foreach($query as $row => $key){
                             $group_id = $key['st_group'];
-                            if($group_id == 1){
-                                $key['group_name'] = "$key[group_name] ສົກຮຽນ $fy_id";
-                            }
+                            $row++;
+                            
             $table .= '
             <tr style="background: #34a1eb;color: white">
                 <td>'. ConverToRoman($row) .'</td>
@@ -884,9 +1372,11 @@
                         $group_emp_atp = 0;
                         $quota = mysqli_query($conn, "SELECT sd_id,sd.as_id,sd.p_m_id,SUM(std_qty) AS std_qty,SUM(emp_qty) AS emp_qty,st.st_id FROM statistic_distribute sd
                         LEFT JOIN statistic_detail st ON sd.as_id=st.as_id
+                        LEFT JOIN adjust a ON st.adj_id=a.adj_id
+                        LEFT JOIN fy ON a.fy_id=fy.fy_id
                         LEFT JOIN statatic s ON st.st_id=s.st_id
                         LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
-                        WHERE st_group='$group_id' AND p_stt=1 GROUP BY sd.p_m_id ORDER BY sd.p_m_id ASC");
+                        WHERE st_group='$group_id' AND year='$fy_id' AND p_stt=1 GROUP BY sd.p_m_id ORDER BY sd.p_m_id ASC");
                         foreach($quota as $data){
                             if($data['p_m_id'] == 1){
                             $group_std_vte = $data['std_qty'];
@@ -1029,7 +1519,7 @@
                 <td>0</td>
             </tr>';
             
-                    $query2 = mysqli_query($conn, "SELECT as_id,sd.adj_id,fy_id,sd.st_id,st_name,st_group,group_name,
+                    $query2 = mysqli_query($conn, "SELECT as_id,sd.adj_id,a.fy_id,sd.st_id,st_name,st_group,group_name,
                     std_high_school+univer+univer_valunteer+prov+intv+ad_test+std_public+emp+std_handi+std_lan+ssk+std+emp_gov+test+std_con+std_2lan+std_inter+emp_private as total,
                     std_high_school,
                     univer,
@@ -1054,7 +1544,8 @@
                     LEFT JOIN statatic st ON sd.st_id=st.st_id
                     LEFT JOIN statatic_group sg ON st.st_group=sg.group_id
                     LEFT JOIN adjust a ON sd.adj_id=a.adj_id
-                    WHERE fy_id='$fy_id' AND st_group='$group_id' ORDER BY sd.st_id;");
+                    LEFT JOIN fy ON a.fy_id=fy.fy_id
+                    WHERE year='$fy_id' AND st_group='$group_id' ORDER BY sd.st_id;");
                     foreach($query2 as $row2 => $key2){
                         $row2++;
                         $st_id = $key2['st_id'];
@@ -1120,8 +1611,10 @@
                         $quota2 = mysqli_query($conn, "SELECT sd_id,sd.as_id,sd.p_m_id,std_qty,emp_qty,st.st_id FROM statistic_distribute sd
                         LEFT JOIN statistic_detail st ON sd.as_id=st.as_id
                         LEFT JOIN statatic s ON st.st_id=s.st_id
+                        LEFT JOIN adjust a ON st.adj_id=a.adj_id
+                        LEFT JOIN fy ON a.fy_id=fy.fy_id
                         LEFT JOIN province_ministry pm ON sd.p_m_id=pm.p_m_id
-                        WHERE st.st_id='$st_id' AND p_stt=1 GROUP BY sd.p_m_id ORDER BY sd.p_m_id ASC;");
+                        WHERE st.st_id='$st_id' AND year='$fy_id' AND p_stt=1 GROUP BY sd.p_m_id ORDER BY sd.p_m_id ASC;");
                         foreach($quota2 as $data2){
                             if($data2['p_m_id'] == 1){
                             $st_std_vte = $data2['std_qty'];
@@ -1276,5 +1769,5 @@
     $table .='
         </tbody>
     </table>
-</div>'
+</div>';
 ?>
