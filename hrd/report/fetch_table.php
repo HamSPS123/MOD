@@ -26,6 +26,10 @@
             $dept_id = $result['dept_id'];
             include "fetch/dept_002.php";
             echo $table;
+        }elseif($result['dept_id'] == 'Dep_003'){
+            $dept_id = $result['dept_id'];
+            include "fetch/dept_003.php";
+            echo $table;
         }else{
             echo "<p class='no-distribute'>ບໍ່ມີຂໍ້ມູນແຈກຢາຍ</p>";
         }

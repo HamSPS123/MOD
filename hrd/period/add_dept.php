@@ -187,13 +187,13 @@
                     <td class="text-center" style="width: 90px;"><?= $i ?>.</td>
                     <td><?= $row["fy_id"] ?></td>
                     <td><?= $row["dept_name"] ?></td>
-                    <td>
+                    <td class="text-center">
                         <?php 
                             if($row["accept"] == 1){
-                               echo "ກົມຢືນຢັນການສ້າງແຜນຮັບ";
+                               echo "<span class='badge badge-success'>ກົມຢືນຢັນການສ້າງແຜນຮັບ</span>";
                             }
                             else{
-                                echo "ຍັງບໍ່ຮັບການຢືນຢັນ";
+                                echo "<span class='badge badge-danger'>ຍັງບໍ່ຮັບການຢືນຢັນ</span>";
                             }
                         ?>
                     </td>

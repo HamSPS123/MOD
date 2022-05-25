@@ -26,7 +26,7 @@
   overflow-x: scroll;
   margin-bottom: 10px;
   /* border: solid black 1px; */
-  height: 500px;
+  height: calc(100vh - 55px);
 }
 
 table tr {
@@ -38,6 +38,7 @@ table tr {
   top: 0 !important;
   z-index: 3;
   display: table-cell;
+  height: var(--h-th) !important;
 }
 
 .tscroll table td:nth-of-type(2) {
