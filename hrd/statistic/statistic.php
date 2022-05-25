@@ -6,10 +6,10 @@
   include ("../../header-footer/header.php");
 
   if(isset($_POST['btnSave'])){
-    $obj->insert_statistic_detail($_POST['adj_id'],$_POST['st_ID'],$_POST['std_high_school'],$_POST['univer'],$_POST['univer_val'],$_POST['prov'],$_POST['intv'],$_POST['ad_test'],$_POST['std_pub'],$_POST['emp'],$_POST['std_handi'],$_POST['std_lan'],$_POST['ssk'],$_POST['std'],$_POST['emp_gov'],$_POST['test'],$_POST['std_con'],$_POST['std_2lan'],$_POST['std_inter'],$_POST['emp_private'],$_SESSION['user_id']);
+    $obj->insert_statistic_detail($_POST['adj_id'],$_POST['st_ID'],$_POST['univer'],$_POST['univer_val'],$_POST['prov'],$_POST['intv'],$_POST['ad_test'],$_POST['std_pub'],$_POST['emp'],$_POST['std_handi'],$_POST['std_lan'],$_POST['ssk'],$_POST['std'],$_POST['emp_gov'],$_POST['test'],$_POST['std_con'],$_POST['std_2lan'],$_POST['std_inter'],$_POST['emp_private'],$_SESSION['user_id']);
     }
     if(isset($_POST['btnEdit'])){
-        $obj->update_statistic_detail($_POST['as_id'],$_POST['std_high_school_update'],$_POST['univer_update'],$_POST['univer_val_update'],$_POST['prov_update'],$_POST['intv_update'],$_POST['ad_test_update'],$_POST['std_pub_update'],$_POST['emp_update'],$_POST['std_handi_update'],$_POST['std_lan_update'],$_POST['ssk_update'],$_POST['std_update'],$_POST['emp_gov_update'],$_POST['test_update'],$_POST['std_con_update'],$_POST['std_2lan_update'],$_POST['std_inter_update'],$_POST['emp_private_update'],$_SESSION['user_id']);
+        $obj->update_statistic_detail($_POST['as_id'],$_POST['univer_update'],$_POST['univer_val_update'],$_POST['prov_update'],$_POST['intv_update'],$_POST['ad_test_update'],$_POST['std_pub_update'],$_POST['emp_update'],$_POST['std_handi_update'],$_POST['std_lan_update'],$_POST['ssk_update'],$_POST['std_update'],$_POST['emp_gov_update'],$_POST['test_update'],$_POST['std_con_update'],$_POST['std_2lan_update'],$_POST['std_inter_update'],$_POST['emp_private_update'],$_SESSION['user_id']);
     }
     if(isset($_POST['btn_save_dis'])){
         $item = array();
@@ -144,12 +144,7 @@ table {
                 <div class="modal-body">
                     <input type="hidden" name="st_ID" id="st_ID">
                     <input type="hidden" name="adj_id" id="adj_id">
-                    <h5 class="mt-3">ນັກຮຽນ ມ7: <span id="total-high" onchange="cal_total()">0</span></h5>
-                    <hr>
-                    <div class="col-md-12">
-                        <label for="">ນັກຮຽນ ມ7</label>
-                        <input type="number" name="std_high_school" id="std_high_school" class="form-control" onchange="cal_high()" value="0" min="0" required>
-                    </div>
+                    
 
                     <h5 class="mt-3">ແບ່ງປັນ: <span id="total-dis" onchange="cal_total()">0</span></h5>
                     <hr>
@@ -436,22 +431,14 @@ function cal_quota(){
     document.getElementById("total-quota").innerHTML = total;
 }
 
-function cal_high(){
-
-    let std = Number.parseInt(document.getElementById("std_high_school").value);
-    
-    document.getElementById("total-high").innerHTML = std;
-}
-
 function cal_total(){
     let total = 0;
 
-    let total_high = Number.parseInt(document.getElementById("total-high").value);
     let total_dis = Number.parseInt(document.getElementById("total-quota").value);
     let total_quota = Number.parseInt(document.getElementById("total-dis").value);
 
 
-    total = total_high+total_dis+total_quota;
+    total = total_dis+total_quota;
 
     document.getElementById("totat").innerHTML = total;
 }

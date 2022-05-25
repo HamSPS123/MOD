@@ -4,7 +4,7 @@
     $st_id = $_POST['query'];
     $adj_id = $_POST['adj'];
 
-    $std_high_school = 0;
+    
     $univer = 0;
     $univer_val = 0;
     $prov = 0;
@@ -27,7 +27,6 @@
     if(mysqli_num_rows($sql) > 0){
         foreach($sql as $row){
             $as_id = $row['as_id'];
-            $std_high_school = $row['std_high_school'];
             $univer = $row['univer'];
             $univer_val = $row['univer_valunteer'];
             $prov = $row['prov'];
@@ -62,15 +61,6 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="as_id" id="as_id" value="<?= $as_id ?>">
-                    <h5 class="mt-3">ນັກຮຽນ ມ7: <span id="total-high-update">0</span></h5>
-                    <hr>
-                    <div class="col-md-12">
-                        <label for="">ນັກຮຽນ ມ7</label>
-                        <input type="number" name="std_high_school_update" id="std_high_school_update"
-                            class="form-control" onchange="cal_high_update()" value="<?= $std_high_school ?>" min="0"
-                            required>
-                    </div>
-
                     <h5 class="mt-3">ແບ່ງປັນ: <span id="total-dis-update">0</span></h5>
                     <hr>
                     <div class="col-md-12">
@@ -190,12 +180,6 @@ function cal_quota_update() {
     document.getElementById("total-quota-update").innerHTML = total;
 }
 
-function cal_high_update() {
-    let std = Number.parseInt(document.getElementById("std_high_school_update").value);
-    
-    document.getElementById("total-high-update").innerHTML = std;
-}
-
 function cal_dis_update() {
     let total = 0;
 
@@ -217,7 +201,6 @@ function cal_dis_update() {
 }
 
 $(document).ready(function(){
-    cal_high_update();
     cal_dis_update();
     cal_quota_update();
 })

@@ -1751,10 +1751,10 @@ class obj{
         }
     }
 
-    public static function insert_statistic_detail($adj_id,$st_ID,$std_high_school,$univer,$univer_val,$prov,$intv,$ad_test,$std_pub,$emp,$std_handi,$std_lan,$ssk,$std,$emp_gov,$test,$std_con,$std_2lan,$std_inter,$emp_private,$user_id){
+    public static function insert_statistic_detail($adj_id,$st_ID,$univer,$univer_val,$prov,$intv,$ad_test,$std_pub,$emp,$std_handi,$std_lan,$ssk,$std,$emp_gov,$test,$std_con,$std_2lan,$std_inter,$emp_private,$user_id){
         global $conn;
 
-        $result = mysqli_query($conn, "call insert_statistic_detail('$adj_id','$st_ID','$std_high_school','$univer','$univer_val','$prov','$intv','$ad_test','$std_pub','$emp','$std_handi','$std_lan','$ssk','$std','$emp_gov','$test','$std_con','$std_2lan','$std_inter','$emp_private','$user_id')");
+        $result = mysqli_query($conn, "call insert_statistic_detail('$adj_id','$st_ID','$univer','$univer_val','$prov','$intv','$ad_test','$std_pub','$emp','$std_handi','$std_lan','$ssk','$std','$emp_gov','$test','$std_con','$std_2lan','$std_inter','$emp_private','$user_id')");
         if (!$result) {
             echo"<script>";
             echo"window.location.href='statistic?msg=fail';";
@@ -1766,10 +1766,10 @@ class obj{
         }
     }
 
-    public static function update_statistic_detail($as_id,$std_high_school,$univer,$univer_val,$prov,$intv,$ad_test,$std_pub,$emp,$std_handi,$std_lan,$ssk,$std,$emp_gov,$test,$std_con,$std_2lan,$std_inter,$emp_private,$user_id){
+    public static function update_statistic_detail($as_id,$univer,$univer_val,$prov,$intv,$ad_test,$std_pub,$emp,$std_handi,$std_lan,$ssk,$std,$emp_gov,$test,$std_con,$std_2lan,$std_inter,$emp_private,$user_id){
         global $conn;
 
-        $result = mysqli_query($conn, "call update_statistic_detail('$as_id','$std_high_school','$univer','$univer_val','$prov','$intv','$ad_test','$std_pub','$emp','$std_handi','$std_lan','$ssk','$std','$emp_gov','$test','$std_con','$std_2lan','$std_inter','$emp_private','$user_id')");
+        $result = mysqli_query($conn, "call update_statistic_detail('$as_id','$univer','$univer_val','$prov','$intv','$ad_test','$std_pub','$emp','$std_handi','$std_lan','$ssk','$std','$emp_gov','$test','$std_con','$std_2lan','$std_inter','$emp_private','$user_id')");
         if (!$result) {
             echo"<script>";
             echo"window.location.href='statistic?msg=fail';";

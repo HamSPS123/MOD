@@ -51,7 +51,7 @@
                 <td><?= $row1['group_name'] ?></td>
                 <td class="text-center">
                 <?php
-                        $num1 = mysqli_query($conn, "SELECT sum(std_high_school)+sum(univer)+sum(univer_valunteer)+sum(prov)+sum(intv+ad_test)+sum(std_public)+sum(emp)+sum(std_handi)+sum(std_lan)+sum(ssk)+sum(std)+sum(emp_gov)+sum(test)+sum(std_con)+sum(std_2lan)+sum(std_inter)+sum(emp_private) as total FROM statistic_detail sd LEFT JOIN statatic s ON sd.st_id=s.st_id WHERE s.st_group='$group_id' AND adj_id='$adj_id' GROUP BY st_group");
+                        $num1 = mysqli_query($conn, "SELECT sum(univer)+sum(univer_valunteer)+sum(prov)+sum(intv+ad_test)+sum(std_public)+sum(emp)+sum(std_handi)+sum(std_lan)+sum(ssk)+sum(std)+sum(emp_gov)+sum(test)+sum(std_con)+sum(std_2lan)+sum(std_inter)+sum(emp_private) as total FROM statistic_detail sd LEFT JOIN statatic s ON sd.st_id=s.st_id WHERE s.st_group='$group_id' AND adj_id='$adj_id' GROUP BY st_group");
                         if(mysqli_num_rows($num1) > 0){
                             $total1 = mysqli_fetch_array($num1,MYSQLI_ASSOC);
                             echo number_format($total1['total'],2);
@@ -81,7 +81,7 @@
                         $btnAdd = "";
                         $btnEdit = "";
                         $btndis = "";
-                        $num = mysqli_query($conn, "SELECT as_id,std_high_school+univer+univer_valunteer+prov+intv+ad_test+std_public+emp+std_handi+std_lan+ssk+std+emp_gov+test+std_con+std_2lan+std_inter+emp_private as total FROM statistic_detail WHERE st_id='$stat_id' AND adj_id='$adj_id'");
+                        $num = mysqli_query($conn, "SELECT as_id,univer+univer_valunteer+prov+intv+ad_test+std_public+emp+std_handi+std_lan+ssk+std+emp_gov+test+std_con+std_2lan+std_inter+emp_private as total FROM statistic_detail WHERE st_id='$stat_id' AND adj_id='$adj_id'");
                         if(mysqli_num_rows($num) > 0){
                             $total = mysqli_fetch_array($num,MYSQLI_ASSOC);
                             echo number_format($total['total'],0);

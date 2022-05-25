@@ -30,7 +30,18 @@
             $dept_id = $result['dept_id'];
             include "fetch/dept_003.php";
             echo $table;
-        }else{
+        }
+        elseif($result['dept_id'] == 'Dep_11'){
+            $dept_id = $result['dept_id'];
+            include "fetch/dept_011.php";
+            echo $table;
+        }
+        elseif($result['dept_id'] == 'Dep_12'){
+            $dept_id = $result['dept_id'];
+            include "fetch/dept_012.php";
+            echo $table;
+        }
+        else{
             echo "<p class='no-distribute'>ບໍ່ມີຂໍ້ມູນແຈກຢາຍ</p>";
         }
     }else{
