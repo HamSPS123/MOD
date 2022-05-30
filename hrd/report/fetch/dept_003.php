@@ -27,6 +27,79 @@ $table='
             </tr>
         </thead>
         <tbody>';
+        $sql = mysqli_query($conn, "SELECT as_id,adj_id,sd.st_id,st_name,group_name,st_group,
+        SUM(std_high_school+univer+univer_valunteer+prov+intv+ad_test+std_public+emp+std_handi+std_lan+ssk+std+emp_gov+test+std_con+std_2lan+std_inter+emp_private) as total,
+        SUM(std_high_school) as std_high_school,
+        SUM(univer) as univer,
+        SUM(univer_valunteer) as univer_valunteer,
+        SUM(prov) as prov,
+        SUM(intv) as intv,
+        SUM(ad_test) as ad_test,
+        SUM(std_public) as std_public,
+        SUM(emp) as emp,
+        SUM(std_handi) as std_handi,
+        SUM(std_lan) as std_lan,
+        SUM(ssk) as ssk,
+        SUM(std) as std,
+        SUM(emp_gov) as emp_gov,
+        SUM(test) as test,
+        SUM(std_con) as std_con,
+        SUM(std_2lan) as std_2lan,
+        SUM(std_inter) as std_inter,
+        SUM(emp_private) as emp_private,
+        user_id
+        FROM statistic_detail sd
+        LEFT JOIN statatic s ON sd.st_id=s.st_id
+        LEFT JOIN statatic_group sg ON s.st_group=sg.group_id
+        WHERE adj_id='$adj_id' GROUP BY st_group ORDER BY st_group ASC");
+        if(mysqli_num_rows($sql) > 0){
+            foreach($sql as $row){
+                $group_id = $row['st_group'];
+                $table .= '
+                    <tr style="background: #34a1eb;color: white">
+                        <td> &nbsp </td>
+                        <td class="text-nowrap">'.$row['group_name'].'</td>
+                        <td>'. number_format($row['total'],0) .'</td>
+                        <td>'. number_format($row['intv'],0) .'</td>
+                        <td>'. number_format($row['emp'],0) .'</td>
+                        <td>'. number_format($row['ad_test'],0) .'</td>
+                        <td>'. number_format($row['std_public'],0) .'</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>';
+
+            $sql2 = mysqli_query($conn, "SELECT as_id,adj_id,sd.st_id,st_name,group_name,
+                std_high_school+univer+univer_valunteer+prov+intv+ad_test+std_public+emp+std_handi+std_lan+ssk+std+emp_gov+test+std_con+std_2lan+std_inter+emp_private as total,
+                std_high_school,univer,univer_valunteer,prov,intv,ad_test,std_public,emp,std_handi,std_lan,ssk,std,emp_gov,test,std_con,std_2lan,std_inter,emp_private,user_id
+                FROM statistic_detail sd
+                LEFT JOIN statatic s ON sd.st_id=s.st_id
+                LEFT JOIN statatic_group sg ON s.st_group=sg.group_id
+                WHERE adj_id='$adj_id' AND st_group='$group_id' ORDER BY sd.st_id ASC;");
+                foreach($sql2 as $row2){
+                    $table .= '
+                    <tr style="background: #34a1eb;color: white">
+                        <td> &nbsp </td>
+                        <td class="text-nowrap">'.$row['st_name'].'</td>
+                        <td>'. number_format($row['total'],0) .'</td>
+                        <td>'. number_format($row['intv'],0) .'</td>
+                        <td>'. number_format($row['emp'],0) .'</td>
+                        <td>'. number_format($row['ad_test'],0) .'</td>
+                        <td>'. number_format($row['std_public'],0) .'</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>';
+                }
+            }
+        }
+
         $sql = mysqli_query($conn, "SELECT u.uni_id,uni_name,dept_name,c.level_id,level_name,sum(get_plan) as get_plan,						
         sum(univer) as univer,
         sum(univer_valunteer) as univer_valunteer,

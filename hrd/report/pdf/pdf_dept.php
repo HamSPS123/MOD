@@ -1,19 +1,19 @@
 <?php
     session_start();
     $path = '../../../';
-    $filename = 'ລາຍງານແຜນແບ່ງປັນ'. date('YmdHis');
     $title = "";
     include $path.'vendor/autoload.php';
     include $path.'oop/obj.php';
     $dept_id = '';
-
-
+    $filename = '';
+    
     if(isset($_GET['adj'])){
         $adj_id = $_GET['adj'];
         $sql = mysqli_query($conn, "SELECT * FROM adjust WHERE adj_id='$adj_id'");
         $dept = mysqli_fetch_array($sql,MYSQLI_ASSOC);
         $dept_id = $dept['dept_id'];
         $fy = $dept['fy_id'];
+        $filename = 'ລາຍງານແຜນແບ່ງປັນ_'. $dept_id . '_' . date('YmdHis');
     }
 
     //include table report
@@ -23,6 +23,10 @@
     }elseif($dept_id == 'Dep_002'){
         include "../fetch/dept_002.php";
         $title = "ແຜນແບ່ງປັນນັກຮຽນ ແລະ ພະນັກງານເຂົ້າຮຽນຕໍ່ສະຖາບັນສ້າງຄູ ສົກປີ " . $fy;
+    }
+    elseif($dept_id == 'Dep_003'){
+        include "../fetch/dept_003.php";
+        $title = "ສັງລວມຂໍ້ມູນຈຳນວນນັກຮຽນ ແລະ ພະນັກງານຮຽນຕໍ່ ໃນສາຍອາຊີວະສຶກສາ ສົກປີ " . $fy;
     }
     elseif($dept_id == 'Dep_11'){
         include "../fetch/dept_011.php";

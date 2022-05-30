@@ -88,8 +88,8 @@ $(document).ready(function() {
                 } else if (type == 'province_data') {
                     html += '<option value="All">---ເລືອກທັງໝົດ---</option>'
                 }
-                for (var count = 0; count < data.length; count++) {
-                    html += '<option value="' + data[count].id + '">' + data[count].name +
+                for (var i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].id + '">' + data[i].name +
                         '</option>';
                 }
                 if (type == 'fy_data') {

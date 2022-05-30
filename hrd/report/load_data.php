@@ -22,11 +22,12 @@
             }
             echo json_encode($output);
         }else{
-            $query = mysqli_query($conn, "SELECT * FROM province_ministry ORDER BY p_m_id");
-            foreach($query as $data){
+            $query = mysqli_query($conn, "SELECT * FROM province_ministry WHERE p_stt = 1 ORDER BY p_m_id");
+            foreach($query as $key => $data){
+                $key+=1;
                 $output[] = array(
                     'id' => $data['p_m_id'],
-                    'name' => $data['p_m_name']
+                    'name' => $key.'. '. $data['p_m_name']
                 );
             }
             echo json_encode($output);
